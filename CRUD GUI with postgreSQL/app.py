@@ -15,32 +15,28 @@ class PrincipalBD:
         self.txtNome = tk.Entry()
         self.txtPreco = tk.Entry()
 
-        self.btnCadastrar = tk.Button(win, text="Cadastrar", command=self.cadastrarProduto)
-        self.btnAtualizar = tk.Button(win, text="Atualizar", command=self.atualizarProduto)
-        self.btnExcluir = tk.Button(win, text="Excluir", command=self.excluirProduto)
-        self.btnLimpar = tk.Button(win, text="Limpar tela", command=self.limparTela)
+        self.btnCadastrar = tk.Button(win, text='Cadastrar', command=self.cadastrarProduto)
+        self.btnAtualizar = tk.Button(win, text='Atualizar', command=self.atualizarProduto)
+        self.btnExcluir = tk.Button(win, text='Excluir', command=self.excluirProduto)
+        self.btnLimpar = tk.Button(win, text='Limpar tela', command=self.limparTela)
 
         ## Componentes do TreeView
-        self.dadosColunas = ("Código", "Nome", "Preço")
+        self.dadosColunas = ('Código', 'Nome', 'Preço')
 
         self.treeProdutos = ttk.Treeview(win,
-                                         columns=self.dadosColunas,
+                                         columns=self.dadosColunas, show='headings',
                                          selectmode='browse')
-
         self.scrollbar = ttk.Scrollbar(win,
                                        orient="vertical",
                                        command=self.treeProdutos.yview)
         self.scrollbar.pack(side='right', fill='x')
-
         self.treeProdutos.configure(yscrollcommand=self.scrollbar.set)
-
-        self.treeProdutos.heading("Código", text="Código")
-        self.treeProdutos.heading("Nome", text="Nome")
-        self.treeProdutos.heading("Preço", text="Preço")
-
-        self.treeProdutos.column("Código", minwidth=0, width=100)
-        self.treeProdutos.column("Nome", minwidth=0, width=100)
-        self.treeProdutos.column("Preço", minwidth=0, width=100)
+        self.treeProdutos.heading('Código', text="Código")
+        self.treeProdutos.heading('Nome', text="Nome")
+        self.treeProdutos.heading('Preço', text="Preço")
+        self.treeProdutos.column('Código', minwidth=0, width=100)
+        self.treeProdutos.column('Nome', minwidth=0, width=100)
+        self.treeProdutos.column('Preço', minwidth=0, width=100)
 
         self.treeProdutos.pack(padx=10, pady=10)
         self.treeProdutos.bind("<<TreeviewSelect>>", self.apresentarRegistrosSelecionados)
@@ -81,7 +77,7 @@ class PrincipalBD:
     def carregarDadosIniciais(self):
         try:
             self.id = 0
-            self.jd = 0
+            self.iid = 0
             registros = self.objBD.selecionarDados()
             print("dados disponiveis no BD")
             for item in registros:
@@ -93,11 +89,11 @@ class PrincipalBD:
                 print("Preço = ", preco, "\n")
 
                 self.treeProdutos.insert('', 'end',
-                                         jd=self.jd,
+                                         iid=self.iid,
                                          values=(codigo,
                                                  nome,
                                                  preco))
-                self.jd = self.jd + 1
+                self.iid = self.iid + 1
                 self.id = self.id + 1
                 print("dados da base")
         except:
@@ -111,7 +107,7 @@ class PrincipalBD:
             print('Codigo', codigo)
             nome = self.txtNome.get()
             print('Nome', nome)
-            preco = float(self.txtPreco.get())
+            preco: float = float(self.txtPreco.get())
             print('Preço', preco)
             print("Leitura dos dados com sucesso")
         except:
@@ -125,11 +121,11 @@ class PrincipalBD:
             codigo, nome, preco = self.lerCampos()
             self.objBD.inserirDados(codigo, nome, preco)
             self.treeProdutos.insert('', 'end',
-                                     jd=self.jd,
+                                     iid=self.iid,
                                      values=(codigo,
                                              nome,
                                              preco))
-            self.jd = self.jd + 1
+            self.iid = self.iid + 1
             self.id = self.id + 1
             self.limparTela()
             print("Produto cadastrado com sucesso!")
